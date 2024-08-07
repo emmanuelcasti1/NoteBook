@@ -19,23 +19,23 @@ namespace NotePad.Api.Controllers
         [HttpPost]
         [Route("createContent")]
 
-        public string CreateContent(Content content)
+        public IActionResult CreateContent(Content content)
         {
             string query = "INSERT INTO Content (Title,Body) VALUES (@title,@body)";
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("NoteCone")!.ToString());
             SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@title", content.title);
-            cmd.Parameters.AddWithValue("@body", content.body);
+            cmd.Parameters.AddWithValue("@title", content.Title);
+            cmd.Parameters.AddWithValue("@body", content.Body);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
             if (i > 0)
             {
-                return "Data inserted";
+                return Ok("Data inserted");
             }
             else
             {
-                return "Error";
+                return BadRequest("Error");
             }
 
         }

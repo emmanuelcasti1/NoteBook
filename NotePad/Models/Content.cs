@@ -2,8 +2,8 @@
 {
     public class Content
     {
-        public int idNote {  get; set; }
-        public string title {  get; set; }
-        public string body { get; set; }
+        public int Id {  get; set; }
+        public string Title {  get; set; }
+        public string Body { get; set; }
     }
 }

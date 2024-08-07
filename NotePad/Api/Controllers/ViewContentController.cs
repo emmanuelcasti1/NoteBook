@@ -35,9 +35,9 @@ namespace NotePad.Api.Controllers
                     {
                         Content content = new Content
                         {
-                            idNote =reader.GetInt32(reader.GetOrdinal("IdNote")),
-                            title = reader.GetString(reader.GetOrdinal("Title")),
-                            body = reader.GetString(reader.GetOrdinal("Body"))
+                            Id =reader.GetInt32(reader.GetOrdinal("IdNote")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Body = reader.GetString(reader.GetOrdinal("Body"))
                         };
                         contents.Add(content);
                     }

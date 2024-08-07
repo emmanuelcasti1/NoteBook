@@ -16,27 +16,27 @@ namespace NotePad.Api.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("edit")]
 
-        public string EditContent(Content content)
+        public IActionResult EditContent(Content content)
         {
             string query = "UPDATE Content SET Title = @title, Body = @body WHERE IdNote = @idNote";
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("NoteCone")!.ToString());
             SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@idNote", content.idNote);
-            cmd.Parameters.AddWithValue("@title", content.title);
-            cmd.Parameters.AddWithValue("@body", content.body);
+            cmd.Parameters.AddWithValue("@idNote", content.Id);
+            cmd.Parameters.AddWithValue("@title", content.Title);
+            cmd.Parameters.AddWithValue("@body", content.Body);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
             if (i > 0)
             {
-                return "Content updated successfully";
+                return Ok("Content updated successfully");
             }
             else
             {
-                return "Error";
+                return BadRequest("Error");
             }
 
         }

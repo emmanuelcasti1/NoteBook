@@ -20,7 +20,7 @@ namespace NotePad.Api.Controllers
         [HttpPost]
         [Route("login")]
 
-        public string Login(Registration login)
+        public IActionResult Login(Registration login)
         {
 
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("NoteCone")!.ToString());
@@ -30,11 +30,11 @@ namespace NotePad.Api.Controllers
             sqlDataAdapter.Fill(dataTable);
             if (dataTable.Rows.Count > 0)
             {
-                return "Valid User";
+                return Ok("Valid User");
             }
             else
             {
-                return "Invalid User";
+                return BadRequest("Invalid User");
             }
         }
         

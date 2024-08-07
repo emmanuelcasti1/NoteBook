@@ -16,29 +16,29 @@ namespace NotePad.Api.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
-        [Route("registration")]
-
-        public string registration(Registration registration)
+        [HttpPost("registration")]
+        public IActionResult RegisterUser([FromBody] Registration registration)
         {
             string query = "INSERT INTO Registration(Username, Password) VALUES (@username, @password)";
 
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("NoteCone")!.ToString());
-            SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", registration.username);
-            cmd.Parameters.AddWithValue("@password", registration.password);
-            connection.Open();
-            int i = cmd.ExecuteNonQuery();
-            connection.Close();
-            if (i > 0)
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("NoteCone")!))
             {
-                return "Data inserted";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", registration.username);
+                cmd.Parameters.AddWithValue("@password", registration.password);
+                connection.Open();
+                int rowsAffected = cmd.ExecuteNonQuery();
+                connection.Close();
+
+                if (rowsAffected > 0)
+                {
+                    return Ok("Data inserted");
+                }
+                else
+                {
+                    return BadRequest("Usuario no registrado");
+                }
             }
-            else
-            {
-                return "Error";
-            }
-           
         }
     }
 }
